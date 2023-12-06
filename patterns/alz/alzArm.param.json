@@ -41,7 +41,7 @@
     "policyAssignmentParametersCommon": {
       "value": {
         "ALZMonitorResourceGroupName": {
-          "value": "rg-amba-monitoring-001"
+          "value": "rg-amba-monitoring-002"
         },
         "ALZMonitorResourceGroupTags": {
           "value": {
