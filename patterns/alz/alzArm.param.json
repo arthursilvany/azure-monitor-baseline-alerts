@@ -3,22 +3,22 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "enterpriseScaleCompanyPrefix": {
-      "value": "Contoso"
+      "value": "MCAPS-Hybrid"
     },
     "platformManagementGroup": {
-      "value": "Platform"
+      "value": "MCAPS-Hybrid"
     },
     "IdentityManagementGroup": {
-      "value": "Identity"
+      "value": "MCAPS-Hybrid"
     },
     "managementManagementGroup": {
-      "value": "Management"
+      "value": "MCAPS-Hybrid"
     },
     "connectivityManagementGroup": {
-      "value": "Connectivity"
+      "value": "MCAPS-Hybrid"
     },
     "LandingZoneManagementGroup": {
-      "value": "Landing Zones"
+      "value": "MCAPS-Hybrid"
     },
     "enableAMBAConnectivity": {
       "value": "Yes"
