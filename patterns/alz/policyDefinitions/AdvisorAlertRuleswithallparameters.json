@@ -66,7 +66,7 @@
                                                 },
                                                 {
                                                     "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*].equals",
-                                                    "equals": "e10b1381-5f0a-47ff-8c7b-37bd13d7c974"
+                                                    "equals": "[parameters('recommendationType')]"
                                                 }
                                             ]
                                         }
@@ -92,6 +92,18 @@
                                     "type": "object"
                                 },
                                 "alertResourceGroupLocation": {
+                                    "type": "string"
+                                },
+                                "alertname": {
+                                    "type": "string"
+                                },
+                                "alertdescriptionmsg": {
+                                    "type": "string"
+                                },
+                                "actiongroupid": {
+                                    "type": "string"
+                                },
+                                "recommendationType": {
                                     "type": "string"
                                 },
                                 "enabled": {
@@ -145,7 +157,7 @@
                                                                 }
                                                             ]
                                                         },
-                                                        "description": "[parameters('alertdescription')]",
+                                                        "description": "[parameters('alertdescriptionmsg')]",
                                                         "enabled": "[parameters('enabled')]",
                                                         "scopes": [
                                                             "[subscription().id]"
@@ -162,7 +174,7 @@
                                                                 },
                                                                 {
                                                                     "field": "properties.recommendationType",
-                                                                    "equals": "e10b1381-5f0a-47ff-8c7b-37bd13d7c974"
+                                                                    "equals": "[parameters('recommendationType')]"
                                                                 }
                                                             ]
                                                         },
@@ -203,11 +215,11 @@
                             "alertdescriptionmsg": {
                                 "value": "[parameters('alertdescriptionmsg')]"
                             },
-                            "alertdescriptionResourceGroupTags": {
-                                "value": "[parameters('alertdescription')]"
-                            },
                             "actiongroupid": {
                                 "value": "[parameters('actiongroupid')]"
+                            },
+                            "recommendationType": {
+                                "value": "[parameters('recommendationType')]"
                             },
                             "alertResourceGroupLocation": {
                                 "value": "[parameters('alertResourceGroupLocation')]"
@@ -254,6 +266,14 @@
                 "description": "Type of Alert Description"
             },
             "defaultValue": "Advisor Recommendation Alert - Right-size or shutdown underutilized virtual machines"
+        },
+        "recommendationType": {
+            "type": "String",
+            "metadata": {
+                "displayName": "Recommendation Type ID",
+                "description": "Type of Recommendation"
+            },
+            "defaultValue": "e10b1381-5f0a-47ff-8c7b-37bd13d7c974"
         },
         "actiongroupid": {
             "type": "String",
