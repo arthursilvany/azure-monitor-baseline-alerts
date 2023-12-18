@@ -1,19 +1,35 @@
-"""
-Este arquivo contém a definição do Azure Policy AdvisorAlertRuleswithallparameters.json.
+# Azure Policy Advisor Alert Rules with All Parameters
 
-Esta definição cria uma regra de alerta de recomendação do Advisor, conforme os parâmetros de sua escolha.
+This repository contains the definition file `AdvisorAlertRuleswithallparameters.json` for creating an Advisor recommendation alert rule in Azure Policy. This rule can be customized based on your specific parameters and requirements.
 
-Para utilizar e importar a definição deste arquivo, siga os passos abaixo:
+## Usage
 
-1. Certifique-se de ter instalado o Azure CLI em sua máquina.
-2. Abra o terminal e navegue até a pasta onde está localizado o arquivo AdvisorAlertRuleswithallparameters.json.
-3. Execute o seguinte comando para importar a definição do Azure Policy:
+### 1. Install Azure CLI
+Ensure that you have the Azure Command-Line Interface (Azure CLI) installed on your machine. If not, you can download it [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 
-    az policy definition create --name <nome_da_politica> --rules AdvisorAlertRuleswithallparameters.json
+### 2. Navigate to the File Location
+Open your terminal and navigate to the folder where the `AdvisorAlertRuleswithallparameters.json` file is located.
 
-    Substitua <nome_da_politica> pelo nome desejado para a política.
+### 3. Import the Azure Policy Definition
+Execute the following command to import the Azure Policy definition:
 
-4. A definição do Azure Policy será importada e estará pronta para ser aplicada em sua assinatura do Azure.
+```bash
+az policy definition create --name <policy_name> --rules AdvisorAlertRuleswithallparameters.json
+```
+Replace <policy_name> with your desired name for the policy.
 
-Certifique-se de revisar e personalizar os parâmetros e regras da política de acordo com suas necessidades antes de aplicá-la.
-"""
+### 4. Review and Customize
+Before applying the policy to your Azure subscription, ensure that you review and customize the parameters and rules according to your specific needs.
+
+### 5. Apply the Azure Policy
+The Azure Policy definition will be imported and ready to be applied to your Azure subscription.
+
+### Important Note
+It is crucial to review and customize the parameters and rules of the policy to align with your organization's requirements and guidelines.
+
+### Additional Information
+For more details on Azure Policy and its usage, refer to the Azure Policy Documentation [here](https://docs.microsoft.com/en-us/azure/governance/policy/overview).
+
+Feel free to contribute to this repository or raise any issues you encounter during the usage of this Azure Policy definition. Your feedback is highly appreciated!
+
+
