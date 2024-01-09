@@ -281,7 +281,7 @@
                 "displayName": "Action Group Id",
                 "description": "Type of action group Id"
             },
-            "defaultValue": "/subscriptions/0c75116a-7d19-4a9e-827c-d3ec692ae9be/resourceGroups/rg-poc-001/providers/microsoft.insights/actiongroups/FINOPS-AG"
+            "defaultValue": "Resource Id of Acton Group"
         },
         "alertResourceGroupTags": {
             "type": "Object",
