@@ -1,0 +1,305 @@
+{
+    "mode": "All",
+    "policyRule": {
+        "if": {
+            "allOf": [
+                {
+                    "field": "type",
+                    "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+                },
+                {
+                    "value": "[resourceGroup().name]",
+                    "like": "[concat(parameters('alertResourceGroupName'), '*')]"
+                }
+            ]
+        },
+        "then": {
+            "effect": "[parameters('effect')]",
+            "details": {
+                "roleDefinitionIds": [
+                    "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+                ],
+                "type": "Microsoft.Insights/activityLogAlerts",
+                "existenceScope": "resourceGroup",
+                "deploymentScope": "resourceGroup",
+                "existenceCondition": {
+                    "allOf": [
+                        {
+                            "field": "Microsoft.Insights/ActivityLogAlerts/enabled",
+                            "equals": "[parameters('enabled')]"
+                        },
+                        {
+                            "count": {
+                                "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*]",
+                                "where": {
+                                    "anyOf": [
+                                        {
+                                            "allOf": [
+                                                {
+                                                    "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*].field",
+                                                    "equals": "category"
+                                                },
+                                                {
+                                                    "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*].equals",
+                                                    "equals": "Recommendation"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "allOf": [
+                                                {
+                                                    "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*].field",
+                                                    "equals": "operationName"
+                                                },
+                                                {
+                                                    "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*].equals",
+                                                    "equals": "Microsoft.Advisor/recommendations/available/action"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "allOf": [
+                                                {
+                                                    "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*].field",
+                                                    "equals": "properties.recommendationType"
+                                                },
+                                                {
+                                                    "field": "Microsoft.Insights/ActivityLogAlerts/condition.allOf[*].equals",
+                                                    "equals": "[parameters('recommendationType')]"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "equals": 3
+                        }
+                    ]
+                },
+                "deployment": {                    
+                    "properties": {
+                        "mode": "incremental",
+                        "template": {
+                            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                            "contentVersion": "1.0.0.0",
+                            "parameters": {
+                                "alertResourceGroupName": {
+                                    "type": "string"
+                                },
+                                "alertResourceGroupTags": {
+                                    "type": "object"
+                                },
+                                "alertResourceGroupLocation": {
+                                    "type": "string"
+                                },
+                                "alertname": {
+                                    "type": "string"
+                                },
+                                "alertdescriptionmsg": {
+                                    "type": "string"
+                                },
+                                "actiongroupid": {
+                                    "type": "string"
+                                },
+                                "recommendationType": {
+                                    "type": "string"
+                                },
+                                "enabled": {
+                                    "type": "string"
+                                }
+                            },
+                            "resources": [
+                                {
+                                    "type": "Microsoft.Resources/deployments",
+                                    "apiVersion": "2019-10-01",
+                                    "name": "AdvisorRecommendation",
+                                    "properties": {
+                                        "mode": "Incremental",
+                                        "template": {
+                                            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                                            "contentVersion": "1.0.0.0",
+                                            "parameters": {
+                                                "enabled": {
+                                                    "type": "string"
+                                                },
+                                                "alertResourceGroupName": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "variables": {},
+                                            "resources": [
+                                                {
+                                                    "type": "microsoft.insights/activityLogAlerts",
+                                                    "apiVersion": "2020-10-01",
+                                                    "name": "[parameters('alertname')]",
+                                                    "location": "global",
+                                                    "tags": {
+                                                        "_deployed_by_amba": true
+                                                    },
+                                                    "properties": {
+                                                        "actions": {
+                                                            "actionGroups": [
+                                                                {
+                                                                    "actionGroupId": "[parameters('actiongroupid')]"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "description": "[parameters('alertdescriptionmsg')]",
+                                                        "enabled": "[parameters('enabled')]",
+                                                        "scopes": [
+                                                            "[subscription().id]"
+                                                        ],
+                                                        "condition": {
+                                                            "allOf": [
+                                                                {
+                                                                    "field": "category",
+                                                                    "equals": "Recommendation"
+                                                                },
+                                                                {
+                                                                    "field": "operationName",
+                                                                    "equals": "Microsoft.Advisor/recommendations/available/action"
+                                                                },
+                                                                {
+                                                                    "field": "properties.recommendationType",
+                                                                    "equals": "[parameters('recommendationType')]"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "parameters": {
+                                                            "enabled": {
+                                                                "value": "[parameters('enabled')]"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "parameters": {
+                                            "enabled": {
+                                                "value": "[parameters('enabled')]"
+                                            },
+                                            "alertResourceGroupName": {
+                                                "value": "[parameters('alertResourceGroupName')]"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "parameters": {
+                            "enabled": {
+                                "value": "[parameters('enabled')]"
+                            },
+                            "alertResourceGroupName": {
+                                "value": "[parameters('alertResourceGroupName')]"
+                            },
+                            "alertResourceGroupTags": {
+                                "value": "[parameters('alertResourceGroupTags')]"
+                            },
+                            "alertname": {
+                                "value": "[parameters('alertname')]"
+                            },
+                            "alertdescriptionmsg": {
+                                "value": "[parameters('alertdescriptionmsg')]"
+                            },
+                            "actiongroupid": {
+                                "value": "[parameters('actiongroupid')]"
+                            },
+                            "recommendationType": {
+                                "value": "[parameters('recommendationType')]"
+                            },
+                            "alertResourceGroupLocation": {
+                                "value": "[parameters('alertResourceGroupLocation')]"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "parameters": {
+        "enabled": {
+            "type": "String",
+            "metadata": {
+                "displayName": "Alert State",
+                "description": "Alert state for the alert"
+            },
+            "allowedValues": [
+                "true",
+                "false"
+            ],
+            "defaultValue": "true"
+        },
+        "alertResourceGroupName": {
+            "type": "String",
+            "metadata": {
+                "displayName": "Resource Group Name",
+                "description": "Resource group the alert is placed in"
+            },
+            "defaultValue": "rgdvmonitoracao"
+        },
+        "alertname": {
+            "type": "String",
+            "metadata": {
+                "displayName": "Alert Name",
+                "description": "Type of Alert Name"
+            },
+            "defaultValue": "Advisor Recommendation Alert - Right-size or shutdown underutilized virtual machines"
+        },
+        "alertdescriptionmsg": {
+            "type": "String",
+            "metadata": {
+                "displayName": "Alert Description",
+                "description": "Type of Alert Description"
+            },
+            "defaultValue": "Advisor Recommendation Alert - Right-size or shutdown underutilized virtual machines"
+        },
+        "recommendationType": {
+            "type": "String",
+            "metadata": {
+                "displayName": "Recommendation Type ID",
+                "description": "Type of Recommendation"
+            },
+            "defaultValue": "e10b1381-5f0a-47ff-8c7b-37bd13d7c974"
+        },
+        "actiongroupid": {
+            "type": "String",
+            "metadata": {
+                "displayName": "Action Group Id",
+                "description": "Type of action group Id"
+            },
+            "defaultValue": "/subscriptions/0c75116a-7d19-4a9e-827c-d3ec692ae9be/resourceGroups/rg-poc-001/providers/microsoft.insights/actiongroups/FINOPS-AG"
+        },
+        "alertResourceGroupTags": {
+            "type": "Object",
+            "metadata": {
+                "displayName": "Resource Group Tags",
+                "description": "Tags on the Resource group the alert is placed in"
+            },
+            "defaultValue": {
+                "_deployed_by_amba": true
+            }
+        },
+        "alertResourceGroupLocation": {
+            "type": "String",
+            "metadata": {
+                "displayName": "Resource Group Location",
+                "strongType": "location",
+                "description": "Location of the Resource group the alert is placed in"
+            },
+            "defaultValue": "brazilsouth"
+        },
+        "effect": {
+            "type": "String",
+            "metadata": {
+                "displayName": "Effect",
+                "description": "Effect of the policy"
+            },
+            "allowedValues": [
+                "deployIfNotExists",
+                "disabled"
+            ],
+            "defaultValue": "deployIfNotExists"
+        }
+    }
+}
